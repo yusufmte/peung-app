@@ -48,6 +48,7 @@ func _ready():
 func reset_game():
 	game_score.fill(0)
 	total_game_points = 0
+	deuce = false
 	for label in game_score_label:
 		label.text = "0"
 	for label in serve_label:
