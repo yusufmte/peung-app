@@ -1,0 +1,180 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1hwkln1ddunq"]
+
+[ext_resource type="Script" uid="uid://bxad7bd1lwfr4" path="res://scenes/match.gd" id="1_5rc6j"]
+[ext_resource type="Texture2D" uid="uid://cq844twwksxbs" path="res://icons/icon2.png" id="1_t0cgm"]
+[ext_resource type="Texture2D" uid="uid://dyvjest5p0use" path="res://icons/return.png" id="2_5rc6j"]
+
+[node name="match" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_5rc6j")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.672024, 0.638565, 0.523767, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="P1ColorRect" type="ColorRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+color = Color(0.866012, 0.61745, 0.429809, 1)
+
+[node name="P1MarginContainer" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="P1VBox" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer"]
+layout_mode = 2
+
+[node name="MatchScoreMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+theme_override_constants/margin_right = 40
+
+[node name="MatchScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/MatchScoreMargin"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "0"
+
+[node name="Name" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Player 1"
+horizontal_alignment = 1
+
+[node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 150
+text = "0"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ServeMarker" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="ServeLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "SERVE"
+horizontal_alignment = 1
+
+[node name="ServeIcon" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker"]
+layout_mode = 2
+texture = ExtResource("1_t0cgm")
+
+[node name="P2ColorRect" type="ColorRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+color = Color(1, 0.568627, 1, 1)
+
+[node name="P2MarginContainer" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="P2VBox" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer"]
+layout_mode = 2
+
+[node name="MatchScoreMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 0
+
+[node name="MatchScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/MatchScoreMargin"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "0"
+
+[node name="Name" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Player 2"
+horizontal_alignment = 1
+
+[node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 150
+text = "0"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ServeMarker" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="ServeLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "SERVE"
+horizontal_alignment = 1
+
+[node name="ServeIcon" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker"]
+layout_mode = 2
+texture = ExtResource("1_t0cgm")
+
+[node name="ReturnButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 40
+
+[node name="ReturnButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin"]
+layout_mode = 2
+icon = ExtResource("2_5rc6j")
+icon_alignment = 1
