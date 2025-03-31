@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d15fmqjobgdib"]
 
 [ext_resource type="Texture2D" uid="uid://ipmhkjehnv83" path="res://icons/help.png" id="1_50phg"]
-[ext_resource type="Script" uid="uid://bkdmjpojlcgiu" path="res://scenes/help.gd" id="1_chmrd"]
+[ext_resource type="Script" uid="uid://bkdmjpojlcgiu" path="res://scripts/help.gd" id="1_chmrd"]
 [ext_resource type="Texture2D" uid="uid://dyvjest5p0use" path="res://icons/return.png" id="1_e3oed"]
 
 [node name="Help" type="Control"]

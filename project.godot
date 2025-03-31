@@ -17,7 +17,7 @@ config/icon="uid://cq844twwksxbs"
 
 [autoload]
 
-Global="*res://scenes/global.gd"
+Global="*res://scripts/global.gd"
 
 [display]
 
