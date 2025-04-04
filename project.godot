@@ -13,7 +13,7 @@ config_version=5
 config/name="peung-app"
 run/main_scene="uid://dxrpgxotqwe77"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="uid://cq844twwksxbs"
+config/icon="uid://cqjuxanl22yc1"
 
 [autoload]
 
