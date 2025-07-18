@@ -57,7 +57,7 @@ func reset_game():
 	update_server()
 	
 func _unhandled_input(event):
-	if match_ongoing and event is InputEventMouseButton and event.pressed:
+	if match_ongoing and event is InputEventMouseButton and event.is_released():
 		if one_game_of_multiple_win_screen:
 			one_game_of_multiple_win_screen = false
 			reset_game()
@@ -65,11 +65,10 @@ func _unhandled_input(event):
 			var mouse_pos = event.position
 			for child in $ColorRect/MarginContainer/VBoxContainer/HBoxContainer.get_children():
 				if child.get_global_rect().has_point(mouse_pos):
-					match event.button_index:
-						MOUSE_BUTTON_LEFT: # corresponds to touchscreen tap via project settings
-							award_point(child)
-						MOUSE_BUTTON_RIGHT: # corresponds to touchscreen long press (on android) via project settings
-							confiscate_point(child)
+					if event.is_action_released("primary"):
+						award_point(child)
+					if event.is_action_released("secondary"):
+						confiscate_point(child)
 
 func award_point(rect):
 	var player_being_awarded = player_rect.find(rect)
