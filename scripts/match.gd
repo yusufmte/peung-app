@@ -71,18 +71,24 @@ func reset_game():
 	update_server()
 	
 func _unhandled_input(event):
-	if match_ongoing and event is InputEventMouseButton and event.is_released():
-		if one_game_of_multiple_win_screen:
+	if not match_ongoing:
+		return
+	if not event is InputEventMouseButton:
+		return
+
+	if event.is_pressed() and one_game_of_multiple_win_screen:
 			one_game_of_multiple_win_screen = false
 			reset_game()
-		else:
-			var mouse_pos = event.position
-			for child in $ColorRect/MarginContainer/VBoxContainer/HBoxContainer.get_children():
-				if child.get_global_rect().has_point(mouse_pos):
-					if event.is_action_released("primary"):
-						award_point(child)
-					if event.is_action_released("secondary"):
-						confiscate_point(child)
+	elif event.is_released() and event.is_action_released("primary"):
+		award_point(get_player_rect_at_pos(event.position))
+	elif event.is_pressed() and event.is_action_pressed("secondary"):
+		confiscate_point(get_player_rect_at_pos(event.position))
+
+# Gets player 1 or player 2 color rect node that contains the position, if any
+func get_player_rect_at_pos(pos : Vector2):
+	for child in $ColorRect/MarginContainer/VBoxContainer/HBoxContainer.get_children():
+		if child.get_global_rect().has_point(pos):
+			return child
 
 func award_point(rect):
 	var player_being_awarded = player_rect.find(rect)
