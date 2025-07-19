@@ -18,6 +18,10 @@ func _ready():
 	p2_color_picker.color = Global.p2_color
 	num_games_option.select(Global.num_games_index)
 	
+	var color_picker_widgets = [p1_color_picker.get_picker(), p2_color_picker.get_picker()]
+	for color_picker_widget in color_picker_widgets:
+		adjust_color_picker_widget(color_picker_widget)
+	
 	var quit_button = $ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/ButtonsMargin/ButtonsVBox/QuitButtonMargin/QuitButton
 	quit_button.pressed.connect(_on_QuitButton_pressed)
 	
@@ -37,6 +41,16 @@ func update_globals():
 	Global.p2_color = p2_color_picker.color
 	Global.num_games_index = num_games_option.selected
 	Global.num_games = int(num_games_option.get_item_text(num_games_option.selected))
+
+func adjust_color_picker_widget(color_picker_widget):
+	color_picker_widget.color_modes_visible = false
+	color_picker_widget.hex_visible = false
+	color_picker_widget.can_add_swatches = false
+	color_picker_widget.sliders_visible = false
+	color_picker_widget.edit_alpha = false
+	color_picker_widget.presets_visible = false
+	color_picker_widget.sampler_visible = false
+	color_picker_widget.picker_shape = 2
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
