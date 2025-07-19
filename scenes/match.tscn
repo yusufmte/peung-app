@@ -78,7 +78,7 @@ horizontal_alignment = 1
 [node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 300
 text = "0"
 horizontal_alignment = 1
 
@@ -143,7 +143,7 @@ horizontal_alignment = 1
 [node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 300
 text = "0"
 horizontal_alignment = 1
 
