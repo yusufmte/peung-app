@@ -6,6 +6,7 @@ var total_match_points = 0
 var current_server = 0
 var serve_marker = []
 var serve_label = []
+var deuce_label
 var match_score_label = []
 var match_score = [0,0]
 var game_score_label = []
@@ -24,6 +25,8 @@ func _ready():
 	serve_marker.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker)
 	serve_marker.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker)
 	update_server()
+	
+	deuce_label = $ColorRect/DeuceLabel
 	
 	serve_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker/ServeLabel)
 	serve_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker/ServeLabel)
@@ -59,6 +62,7 @@ func reset_game():
 	game_score.fill(0)
 	total_game_points = 0
 	deuce = false
+	deuce_label.hide()
 	for label in game_score_label:
 		label.text = "0"
 	for label in serve_label:
@@ -142,6 +146,7 @@ func declare_match_winner(match_winning_player):
 
 func activate_deuce_mode():
 	deuce = true
+	deuce_label.show()
 
 func update_server():
 	if not deuce:
