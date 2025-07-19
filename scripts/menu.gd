@@ -1,15 +1,21 @@
 extends Control
 
 var p1_name_label
+var p1_color_picker
 var p2_name_label
+var p2_color_picker
 var num_games_option
 	
 func _ready():
-	p1_name_label = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1Margin/Player1
-	p2_name_label = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2Margin/Player2
+	p1_name_label = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1HBox/Player1
+	p1_color_picker = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1HBox/Player1ColorPickerButton
+	p2_name_label = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2HBox/Player2
+	p2_color_picker = $ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2HBox/Player2ColorPickerButton
 	num_games_option = $ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/GamesMargin/GamesVBox/NumGames
 	p1_name_label.text = Global.p1_name
+	p1_color_picker.color = Global.p1_color
 	p2_name_label.text = Global.p2_name
+	p2_color_picker.color = Global.p2_color
 	num_games_option.select(Global.num_games_index)
 	
 	var quit_button = $ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/ButtonsMargin/ButtonsVBox/QuitButtonMargin/QuitButton
@@ -26,7 +32,9 @@ func _ready():
 
 func update_globals():
 	Global.p1_name = p1_name_label.text
+	Global.p1_color = p1_color_picker.color
 	Global.p2_name = p2_name_label.text
+	Global.p2_color = p2_color_picker.color
 	Global.num_games_index = num_games_option.selected
 	Global.num_games = int(num_games_option.get_item_text(num_games_option.selected))
 

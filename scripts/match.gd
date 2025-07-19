@@ -44,6 +44,9 @@ func _ready():
 	
 	player_rect.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect)
 	player_rect.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect)
+	
+	player_rect[0].color = Global.p1_color
+	player_rect[1].color = Global.p2_color
 
 func reset_game():
 	game_score.fill(0)

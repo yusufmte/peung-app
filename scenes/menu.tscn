@@ -94,14 +94,13 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 alignment = 1
 
-[node name="Player1Margin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox"]
+[node name="Player1HBox" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox"]
 layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_right = 75
+size_flags_horizontal = 3
 
-[node name="Player1" type="LineEdit" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1Margin"]
+[node name="Player1" type="LineEdit" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1HBox"]
 layout_mode = 2
-theme_override_constants/minimum_character_width = 7
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 100
 text = "Player 1"
 alignment = 1
@@ -109,18 +108,31 @@ max_length = 10
 keep_editing_on_text_submit = true
 caret_blink = true
 
-[node name="Player2Margin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox"]
+[node name="Player1ColorPickerButton" type="ColorPickerButton" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player1HBox"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 75
-theme_override_constants/margin_right = 0
+color = Color(0.866667, 0.615686, 0.431373, 1)
 
-[node name="Player2" type="LineEdit" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2Margin"]
+[node name="Control" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_constants/minimum_character_width = 7
+
+[node name="Player2HBox" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Player2" type="LineEdit" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 100
 text = "Player 2"
 alignment = 1
 max_length = 10
+
+[node name="Player2ColorPickerButton" type="ColorPickerButton" parent="ColorRect/MarginContainer/VBoxContainer/PlayersMargin/PlayersHBox/Player2HBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+color = Color(1, 0.568627, 1, 1)
 
 [node name="Spacer" type="Control" parent="ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -139,11 +151,10 @@ alignment = 1
 
 [node name="GamesMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_right = 200
 
 [node name="GamesVBox" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/GamesMargin"]
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/GamesMargin/GamesVBox"]
 layout_mode = 2
@@ -153,7 +164,6 @@ text = "Games: "
 
 [node name="NumGames" type="OptionButton" parent="ColorRect/MarginContainer/VBoxContainer/BottomMargin/BottomHBox/GamesMargin/GamesVBox"]
 layout_mode = 2
-size_flags_horizontal = 3
 theme = SubResource("Theme_mae5d")
 theme_override_font_sizes/font_size = 100
 theme_override_constants/arrow_margin = 10
