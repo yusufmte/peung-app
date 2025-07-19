@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1hwkln1ddunq"]
+[gd_scene load_steps=3 format=3 uid="uid://c1hwkln1ddunq"]
 
 [ext_resource type="Script" uid="uid://bxad7bd1lwfr4" path="res://scripts/match.gd" id="1_5rc6j"]
 [ext_resource type="Texture2D" uid="uid://cq844twwksxbs" path="res://icons/icon2.png" id="1_t0cgm"]
-[ext_resource type="Texture2D" uid="uid://dyvjest5p0use" path="res://icons/return.png" id="2_5rc6j"]
 
 [node name="match" type="Control"]
 layout_mode = 3
@@ -176,8 +175,10 @@ theme_override_constants/margin_bottom = 40
 
 [node name="ReturnButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin"]
 layout_mode = 2
-icon = ExtResource("2_5rc6j")
-icon_alignment = 1
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "exit to menu"
 
 [node name="DeuceLabel" type="Label" parent="ColorRect"]
 visible = false

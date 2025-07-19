@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfca33foh27q8"]
+[gd_scene load_steps=5 format=3 uid="uid://dfca33foh27q8"]
 
 [ext_resource type="Script" uid="uid://bylt58y3m00qt" path="res://scripts/audio_manager.gd" id="1_aoitu"]
 [ext_resource type="Texture2D" uid="uid://bumkhca36v0p0" path="res://icons/mic.png" id="1_mhnvy"]
 [ext_resource type="Texture2D" uid="uid://c7hof84g7sgn2" path="res://icons/record.png" id="2_m6ggh"]
 [ext_resource type="Texture2D" uid="uid://cephd2gucet7x" path="res://icons/delete.png" id="3_aoitu"]
-[ext_resource type="Texture2D" uid="uid://dyvjest5p0use" path="res://icons/return.png" id="4_m6ggh"]
 
 [node name="AudioManager" type="Control"]
 layout_mode = 3
@@ -173,5 +172,7 @@ theme_override_constants/margin_bottom = 40
 
 [node name="ReturnButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin"]
 layout_mode = 2
-icon = ExtResource("4_m6ggh")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "return to menu"
 icon_alignment = 1

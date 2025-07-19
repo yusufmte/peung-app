@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d15fmqjobgdib"]
+[gd_scene load_steps=3 format=3 uid="uid://d15fmqjobgdib"]
 
 [ext_resource type="Texture2D" uid="uid://ipmhkjehnv83" path="res://icons/help.png" id="1_50phg"]
 [ext_resource type="Script" uid="uid://bkdmjpojlcgiu" path="res://scripts/help.gd" id="1_chmrd"]
-[ext_resource type="Texture2D" uid="uid://dyvjest5p0use" path="res://icons/return.png" id="1_e3oed"]
 
 [node name="Help" type="Control"]
 layout_mode = 3
@@ -89,5 +88,7 @@ theme_override_constants/margin_bottom = 40
 
 [node name="ReturnButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin"]
 layout_mode = 2
-icon = ExtResource("1_e3oed")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "return to menu"
 icon_alignment = 1
