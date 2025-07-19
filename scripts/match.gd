@@ -47,6 +47,13 @@ func _ready():
 	
 	player_rect[0].color = Global.p1_color
 	player_rect[1].color = Global.p2_color
+	
+	for i in [0,1]:
+		if player_rect[i].color.v < 0.5:
+			serve_label[i].add_theme_color_override("font_color", Color.WHITE)
+			match_score_label[i].add_theme_color_override("font_color", Color.WHITE)
+			game_score_label[i].add_theme_color_override("font_color", Color.WHITE)
+			name_label[i].add_theme_color_override("font_color", Color.WHITE)
 
 func reset_game():
 	game_score.fill(0)
