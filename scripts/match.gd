@@ -96,8 +96,9 @@ func award_point(rect):
 	total_game_points = total_game_points + 1
 	game_score[player_being_awarded] = game_score[player_being_awarded] + 1
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
+	update_deuce_label()
 	update_server()
-	check_for_game_victory_or_deuce()
+	check_for_game_victory()
 
 func confiscate_point(rect):
 	var player_being_punished = player_rect.find(rect)
@@ -105,9 +106,19 @@ func confiscate_point(rect):
 		total_game_points = total_game_points - 1
 		game_score[player_being_punished] = game_score[player_being_punished] - 1
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
+		update_deuce_label()
 		update_server()
 
-func check_for_game_victory_or_deuce():
+func is_deuce():
+	return (game_score[0] >= 10 and game_score[1] >= 10)
+
+func update_deuce_label():
+	if is_deuce():
+		deuce_label.show()
+	else:
+		deuce_label.hide()
+
+func check_for_game_victory():
 	if game_score[0] < 10 and game_score[1] < 10: #neither deuce nor victory
 		return
 	if game_score[0] > 10 or game_score[1] > 10: #someone winning (if there is a 2pt lead, checked below)
@@ -115,8 +126,6 @@ func check_for_game_victory_or_deuce():
 				game_victory(0)
 			if game_score[1] > (game_score[0] + 1):
 				game_victory(1)
-	if game_score[0] == 10 and game_score[1] == 10: #deuce
-		activate_deuce_mode()
 
 func game_victory(game_winning_player):
 	if Global.num_games > 1:
@@ -151,22 +160,12 @@ func declare_match_winner(match_winning_player):
 	serve_marker[match_winning_player].show()
 	serve_marker[(match_winning_player + 1) % 2].hide()
 
-func activate_deuce_mode():
-	deuce = true
-	deuce_label.show()
-
 func update_server():
-	if not deuce:
+	if not is_deuce():
 		if (total_game_points % 4) < 2: #serve alternates every 2pts
-			if starting_server == 0:
-				set_server_to(0)
-			else:
-				set_server_to(1)
+			set_server_to(starting_server)
 		else:
-			if starting_server == 0:
-				set_server_to(1)
-			else:
-				set_server_to(0)
+			set_server_to(1 - starting_server) #makes server 0 if starting server was 1, and vice versa
 	else: #serve alternates every 1pt in deuce mode
 			set_server_to((total_game_points + starting_server) % 2) #this is weird, but i believe ends up correctly calculating the deuce server
 
