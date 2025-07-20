@@ -33,9 +33,6 @@ func _ready():
 
 	match_score_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/MatchScoreMargin/MatchScore)
 	match_score_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/MatchScoreMargin/MatchScore)
-	if Global.num_games == 1:
-		for label in match_score_label:
-			label.add_theme_color_override("font_color", Color(0,0,0,0))
 	
 	name_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/Name)
 	name_label.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/Name)
@@ -57,6 +54,10 @@ func _ready():
 			match_score_label[i].add_theme_color_override("font_color", Color.WHITE)
 			game_score_label[i].add_theme_color_override("font_color", Color.WHITE)
 			name_label[i].add_theme_color_override("font_color", Color.WHITE)
+	
+	if Global.num_games == 1:
+		for label in match_score_label:
+			label.add_theme_color_override("font_color", Color(0,0,0,0))
 
 func reset_game():
 	game_score.fill(0)
