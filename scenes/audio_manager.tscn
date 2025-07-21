@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfca33foh27q8"]
+[gd_scene load_steps=6 format=3 uid="uid://dfca33foh27q8"]
 
 [ext_resource type="Script" uid="uid://bylt58y3m00qt" path="res://scripts/audio_manager.gd" id="1_aoitu"]
 [ext_resource type="Texture2D" uid="uid://bumkhca36v0p0" path="res://icons/mic.png" id="1_mhnvy"]
 [ext_resource type="Texture2D" uid="uid://c7hof84g7sgn2" path="res://icons/record.png" id="2_m6ggh"]
 [ext_resource type="Texture2D" uid="uid://cephd2gucet7x" path="res://icons/delete.png" id="3_aoitu"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_m6ggh"]
 
 [node name="AudioManager" type="Control"]
 layout_mode = 3
@@ -176,3 +178,11 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
 text = "return to menu"
 icon_alignment = 1
+
+[node name="RecordingPlaybackAudioStream" type="AudioStreamPlayer" parent="."]
+
+[node name="RecordingAudioStream" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamMicrophone_m6ggh")
+bus = &"Record"
+
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox/RecordButtonMargin/RecordButton" to="." method="_on_record_button_pressed"]
