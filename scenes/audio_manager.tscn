@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfca33foh27q8"]
+[gd_scene load_steps=9 format=3 uid="uid://dfca33foh27q8"]
 
 [ext_resource type="Script" uid="uid://bylt58y3m00qt" path="res://scripts/audio_manager.gd" id="1_aoitu"]
 [ext_resource type="Texture2D" uid="uid://bumkhca36v0p0" path="res://icons/mic.png" id="1_mhnvy"]
 [ext_resource type="Texture2D" uid="uid://c7hof84g7sgn2" path="res://icons/record.png" id="2_m6ggh"]
 [ext_resource type="Texture2D" uid="uid://cephd2gucet7x" path="res://icons/delete.png" id="3_aoitu"]
+[ext_resource type="Texture2D" uid="uid://deqas533j3m7a" path="res://icons/play_sound.png" id="3_njtn3"]
 [ext_resource type="Script" uid="uid://d1h31lqevx5xd" path="res://scripts/record_button.gd" id="4_aoitu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aoitu"]
@@ -94,6 +95,17 @@ theme_override_constants/margin_right = 30
 layout_mode = 2
 alignment = 1
 
+[node name="PlayButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PlayButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox/PlayButtonMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+icon = ExtResource("3_njtn3")
+icon_alignment = 1
+
 [node name="RecordButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
@@ -111,7 +123,8 @@ layout_mode = 2
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="DeleteButtonMargin" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox/DeleteButtonMargin"]
+[node name="DeleteButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox/DeleteButtonMargin"]
+unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("3_aoitu")
 icon_alignment = 1
@@ -157,3 +170,4 @@ stream = SubResource("AudioStreamMicrophone_m6ggh")
 bus = &"Record"
 
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ButtonsMargin/ButtonsVBox/RecordButtonMargin/RecordButton" to="." method="_on_record_button_pressed"]
+[connection signal="item_selected" from="ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ScrollContainer/AudioManagerItemList" to="." method="_on_audio_manager_item_list_item_selected"]
