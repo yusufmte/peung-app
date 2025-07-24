@@ -18,6 +18,11 @@ var one_game_of_multiple_win_screen = false
 var deuce = false
 var games_needed_to_win_match = int(Global.num_games / 2) + 1
 
+## A dictionary mapping sound keys (strings) to AudioStreamWAV objects
+## of loaded sound resources. When no sound resource is available for a particular
+## key, the value will be `null`.
+var sounds_dict : Dictionary
+
 func _ready():
 	var return_button = $ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin/ReturnButton
 	return_button.pressed.connect(_on_ReturnButton_pressed)
@@ -58,6 +63,10 @@ func _ready():
 	if Global.num_games == 1:
 		for label in match_score_label:
 			label.add_theme_color_override("font_color", Color(0,0,0,0))
+
+	# Load all available sounds
+	for key in Global.sound_keys():
+		sounds_dict[key] = Global.load_sound(key)
 
 func reset_game():
 	game_score.fill(0)
@@ -177,6 +186,19 @@ func set_server_to(server):
 	else:
 		serve_marker[0].hide()
 		serve_marker[1].show()
+
+## Play a sound by key, first checking if there is an existing wav to use,
+## and if not then attempting to use TTS as a fallback.
+func play_sound(key:String) -> void:
+	if sounds_dict.has(key) and sounds_dict[key] is AudioStreamWAV:
+		$AudioStreamPlayer.stream = sounds_dict[key]
+		$AudioStreamPlayer.play()
+	else:
+		var voices = DisplayServer.tts_get_voices_for_language("en")
+		if voices.size() > 0:
+			DisplayServer.tts_speak(key, voices[0])
+		else:
+			push_warning("TTS fallback unavailable; cannot speak '%s'" % key)
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
