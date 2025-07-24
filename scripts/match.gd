@@ -108,6 +108,7 @@ func award_point(rect):
 	update_deuce_label()
 	update_server()
 	check_for_game_victory()
+	play_sound("point award chime")
 
 func confiscate_point(rect):
 	var player_being_punished = player_rect.find(rect)
@@ -117,6 +118,7 @@ func confiscate_point(rect):
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
 		update_deuce_label()
 		update_server()
+		play_sound("point rescind chime")
 
 func is_deuce():
 	return (game_score[0] >= 10 and game_score[1] >= 10)
