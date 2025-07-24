@@ -1,9 +1,10 @@
 extends Control
 
-var recording_effect : AudioEffect
-var recording
-var mic
-var player
+var recording_effect : AudioEffectRecord
+var recording : AudioStreamWAV
+
+var mic : AudioStreamPlayer
+var player : AudioStreamPlayer
 
 func _ready():
 	var return_button = $ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin/ReturnButton
@@ -20,6 +21,7 @@ func _on_record_button_pressed() -> void:
 		recording = recording_effect.get_recording()
 		mic.stop()
 		recording_effect.set_recording_active(false)
+		$%RecordButton.set_icon_to_start()
 
 		# Play back the recorded thing to demo how to get the stream and play it
 		player.stream = recording
@@ -27,3 +29,4 @@ func _on_record_button_pressed() -> void:
 	else:
 		mic.play()
 		recording_effect.set_recording_active(true)
+		$%RecordButton.set_icon_to_stop()
