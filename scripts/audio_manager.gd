@@ -5,13 +5,19 @@ var recording : AudioStreamWAV
 
 var mic : AudioStreamPlayer
 var player : AudioStreamPlayer
+var item_list : ItemList
 
-func _ready():
+func _ready() -> void:
 	var return_button = $ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin/ReturnButton
 	return_button.pressed.connect(_on_ReturnButton_pressed)
 	recording_effect = AudioServer.get_bus_effect(AudioServer.get_bus_index("Record"), 0)
 	mic = $RecordingAudioStream
 	player = $RecordingPlaybackAudioStream
+
+	item_list = %AudioManagerItemList
+	item_list.clear()
+	for key in Global.sound_keys():
+		item_list.add_item(key)
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
