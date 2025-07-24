@@ -19,7 +19,14 @@ func _ready() -> void:
 	for key in Global.sound_keys():
 		item_list.add_item(key)
 
+	DirAccess.make_dir_absolute(Global.sounds_dir)
+
 	_update_buttons_enabledness()
+	set_status_text("")
+
+## Set the status label at the bottom to display some text. 
+func set_status_text(text:String) -> void:
+	%StatusLabel.text = text
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
@@ -31,13 +38,24 @@ func _on_record_button_pressed() -> void:
 		recording_effect.set_recording_active(false)
 		$%RecordButton.set_icon_to_start()
 
-		# Play back the recorded thing to demo how to get the stream and play it
-		player.stream = recording
-		player.play()
+		var selected_items : PackedInt32Array = %AudioManagerItemList.get_selected_items()
+		if selected_items.size() != 1:
+			set_status_text("Recording should not be enabled when there isn't a unqiue selection!")
+			return
+		var sound_key : String = %AudioManagerItemList.get_item_text(selected_items[0])
+		var user_path : String = Global.get_user_sound_path(sound_key)
+		var err = recording.save_to_wav(user_path)
+		if err == OK:
+			set_status_text("Saved custom override for %s" % sound_key)
+		else:
+			set_status_text("Error: Unable to save custom override for %s" % sound_key)
+			print(err)
 	else:
 		mic.play()
 		recording_effect.set_recording_active(true)
 		$%RecordButton.set_icon_to_stop()
+
+	_update_buttons_enabledness()
 
 func _update_buttons_enabledness() -> void:
 	var nothing_selected : bool = not %AudioManagerItemList.is_anything_selected()
@@ -55,4 +73,36 @@ func _update_buttons_enabledness() -> void:
 			%DeleteButton.disabled = not FileAccess.file_exists(Global.get_user_sound_path(sound_key))
 
 func _on_audio_manager_item_list_item_selected(index: int) -> void:
+	_update_buttons_enabledness()
+
+func _on_play_button_pressed() -> void:
+	var selected_items : PackedInt32Array = %AudioManagerItemList.get_selected_items()
+	if selected_items.size() != 1:
+		set_status_text("Play button should not be enabled when there isn't a unqiue selection!")
+		return
+	var sound_key : String = %AudioManagerItemList.get_item_text(selected_items[0])
+	var sound = Global.load_sound(sound_key)
+	if sound is AudioStreamWAV:
+		set_status_text("Playing %s from asset" % sound_key)
+		player.stream = sound
+		player.play()
+	else:
+		set_status_text("Playing %s using TTS" % sound_key)
+		Global.speak_tts(sound_key)
+
+func _on_delete_button_pressed() -> void:
+	var selected_items : PackedInt32Array = %AudioManagerItemList.get_selected_items()
+	if selected_items.size() != 1:
+		set_status_text("Delete button should not be enabled when there isn't a unqiue selection!")
+		return
+	var sound_key : String = %AudioManagerItemList.get_item_text(selected_items[0])
+	var user_path : String = Global.get_user_sound_path(sound_key)
+	if not FileAccess.file_exists(user_path):
+		set_status_text("Delete button should not be enabled when the corresponding file does not exist!")
+		return
+	var err = DirAccess.remove_absolute(user_path)
+	if err == OK:
+		set_status_text("Deleted custom override for %s" % sound_key)
+	else:
+		set_status_text("Error: Unable to delete custom override for %s" % sound_key)
 	_update_buttons_enabledness()

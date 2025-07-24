@@ -9,6 +9,7 @@ var TARO_COLOR : Color = Color(1.00,0.56,1.00,1.00)
 var p2_color = TARO_COLOR
 var num_games_index = 0
 var num_games = 1
+var sounds_dir = "user://sounds"
 
 var _base_sound_keys : Array[String] = [
 	"point",
@@ -50,7 +51,7 @@ func sanitize_key(key: String) -> String:
 ## so for example "Player 1" is treated the same as "player_1".
 func get_user_sound_path(key: String) -> String:
 	var name = sanitize_key(key) + ".wav"
-	return "user://sounds/%s" % name
+	return sounds_dir.path_join(name)
 
 ## Get audio data by key.
 ## Expected keys are those returned by `sound_keys`,
@@ -65,9 +66,17 @@ func get_user_sound_path(key: String) -> String:
 func load_sound(key : String) -> Variant:
 	var user_path = get_user_sound_path(key)
 	if FileAccess.file_exists(user_path):
-		return ResourceLoader.load(user_path) as AudioStreamWAV
+		return AudioStreamWAV.load_from_file(user_path)
 	var name = sanitize_key(key) + ".wav"
 	var res_path = "res://sounds/%s" % name
 	if ResourceLoader.exists(res_path, "AudioStreamWAV"):
 		return ResourceLoader.load(res_path) as AudioStreamWAV
 	return null
+
+## Attempt to use system TTS to speak some text
+func speak_tts(text : String) -> void:
+	var voices = DisplayServer.tts_get_voices_for_language("en")
+	if voices.size() > 0:
+		DisplayServer.tts_speak(text, voices[0])
+	else:
+		push_warning("TTS unavailable; cannot speak '%s'" % text)

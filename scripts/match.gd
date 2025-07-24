@@ -194,11 +194,7 @@ func play_sound(key:String) -> void:
 		$AudioStreamPlayer.stream = sounds_dict[key]
 		$AudioStreamPlayer.play()
 	else:
-		var voices = DisplayServer.tts_get_voices_for_language("en")
-		if voices.size() > 0:
-			DisplayServer.tts_speak(key, voices[0])
-		else:
-			push_warning("TTS fallback unavailable; cannot speak '%s'" % key)
+		Global.speak_tts(key)
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

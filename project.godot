@@ -17,6 +17,7 @@ config/icon="uid://cqjuxanl22yc1"
 
 [audio]
 
+general/text_to_speech=true
 driver/enable_input=true
 
 [autoload]
