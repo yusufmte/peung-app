@@ -10,6 +10,7 @@ var p2_color = TARO_COLOR
 var num_games_index = 0
 var num_games = 1
 var sounds_dir = "user://sounds"
+var tts_voice = null
 
 var _base_sound_keys : Array[String] = [
 	"point",
@@ -24,6 +25,13 @@ var _base_sound_keys : Array[String] = [
 	"point award chime", #  (a bell "ding")
 	"point rescind chime", # (a low "vwoopt" sound)
 ]
+
+func _ready() -> void:
+	var voices = DisplayServer.tts_get_voices_for_language("en")
+	if voices.size() > 0:
+		tts_voice = voices[0]
+	else:
+		push_warning("TTS unavailable!")
 
 ## Keys that can be used to identify audio clips.
 ## This includes the currently set player names, as well as some numbers up
@@ -75,8 +83,8 @@ func load_sound(key : String) -> Variant:
 
 ## Attempt to use system TTS to speak some text
 func speak_tts(text : String) -> void:
-	var voices = DisplayServer.tts_get_voices_for_language("en")
-	if voices.size() > 0:
-		DisplayServer.tts_speak(text, voices[0])
-	else:
+	if tts_voice == null:
 		push_warning("TTS unavailable; cannot speak '%s'" % text)
+		return
+
+	DisplayServer.tts_speak(text, tts_voice)

@@ -201,3 +201,5 @@ theme_override_font_sizes/font_size = 100
 text = "DEUCE!"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

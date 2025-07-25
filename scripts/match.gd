@@ -22,6 +22,9 @@ var games_needed_to_win_match = int(Global.num_games / 2) + 1
 ## of loaded sound resources. When no sound resource is available for a particular
 ## key, the value will be `null`.
 var sounds_dict : Dictionary
+## A list of sound keys that are currently queued up to be played
+var sound_queue : Array[String] = []
+var sound_currently_playing : bool = false
 
 func _ready():
 	var return_button = $ColorRect/MarginContainer/VBoxContainer/ReturnButtonMargin/ReturnButton
@@ -68,6 +71,12 @@ func _ready():
 	for key in Global.sound_keys():
 		sounds_dict[key] = Global.load_sound(key)
 
+	# Listen for TTS utterenace end
+	DisplayServer.tts_set_utterance_callback(
+		DisplayServer.TTS_UTTERANCE_ENDED,
+		Callable(self, "_on_tts_utterance_ended"),
+	)
+
 func reset_game():
 	game_score.fill(0)
 	total_game_points = 0
@@ -107,8 +116,8 @@ func award_point(rect):
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
 	update_deuce_label()
 	update_server()
+	queue_sound("point award chime")
 	check_for_game_victory()
-	play_sound("point award chime")
 
 func confiscate_point(rect):
 	var player_being_punished = player_rect.find(rect)
@@ -118,7 +127,7 @@ func confiscate_point(rect):
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
 		update_deuce_label()
 		update_server()
-		play_sound("point rescind chime")
+		queue_sound("point rescind chime")
 
 func is_deuce():
 	return (game_score[0] >= 10 and game_score[1] >= 10)
@@ -164,6 +173,8 @@ func declare_game_winner(game_winning_player):
 	serve_label[game_winning_player].text = "WIN!!"
 	serve_marker[game_winning_player].show()
 	serve_marker[(game_winning_player + 1) % 2].hide()
+	queue_sound([Global.p1_name, Global.p2_name][game_winning_player])
+	queue_sound("wins the game")
 
 func declare_match_winner(match_winning_player):
 	match_ongoing = false
@@ -197,6 +208,28 @@ func play_sound(key:String) -> void:
 		$AudioStreamPlayer.play()
 	else:
 		Global.speak_tts(key)
+
+## Queue the playing of a sound which is specified by sound key
+func queue_sound(key:String) -> void:
+	if not sound_currently_playing:
+		sound_currently_playing = true
+		play_sound(key)
+	else:
+		sound_queue.push_back(key)
+
+func _on_audio_stream_player_finished() -> void:
+	_on_play_sound_finish()
+
+func _on_tts_utterance_ended(_utterance_id : int) -> void:
+	_on_play_sound_finish()
+
+## we call this whether the sound was played via TTS or via audio stream
+func _on_play_sound_finish() -> void:
+	if sound_queue.is_empty():
+		sound_currently_playing = false
+	else:
+		assert(sound_currently_playing)
+		play_sound(sound_queue.pop_front())
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
