@@ -10,7 +10,8 @@ var p2_color = TARO_COLOR
 var num_games_index = 0
 var num_games = 1
 var sounds_dir = "user://sounds"
-var tts_voice = null
+var settings_filepath = "user://settings.cfg"
+var _tts_voice = null
 
 var _base_sound_keys : Array[String] = [
 	"point",
@@ -27,11 +28,40 @@ var _base_sound_keys : Array[String] = [
 ]
 
 func _ready() -> void:
-	var voices = DisplayServer.tts_get_voices_for_language("en")
-	if voices.size() > 0:
-		tts_voice = voices[0]
-	else:
-		push_warning("TTS unavailable!")
+	_tts_voice = get_tts_voice()
+
+## Get the selected TTS voice by taking the global variable first,
+## then if it's not initialized proceeding as follows:
+## first take what's saved in config if there is a non-"" setting,
+## fall back to taking the first voice if one is available,
+## and finally fall back to "", which indicates that TTS is not available.
+func get_tts_voice() -> String:
+	if _tts_voice != null:
+		return _tts_voice
+
+	var voice : String = ""
+	var cfg = ConfigFile.new()
+	if (cfg.load(settings_filepath) == OK):
+		voice = cfg.get_value("TTS", "voice", "")
+	if voice == "":
+		var voices = DisplayServer.tts_get_voices_for_language("en")
+		if voices.size() > 0:
+			voice = voices[0]
+
+	return voice
+
+## Set the tts voice to be used, and also save the selection to the persistent conig.
+func set_and_save_tts_voice(voice : String) -> void:
+	_tts_voice = voice
+	var cfg = ConfigFile.new()
+	cfg.load(settings_filepath) # a no-op if the config file is missing, no problem
+	cfg.set_value("TTS", "voice", voice)
+	cfg.save(settings_filepath)
+
+## Whether a tts voice is available for use. If this is false then TTS will not work
+## and the "end of an utterance!" will never come.
+func tts_is_available() -> bool:
+	return _tts_voice is String and _tts_voice != ""
 
 ## Keys that can be used to identify audio clips.
 ## This includes the currently set player names, as well as some numbers up
@@ -81,10 +111,7 @@ func load_sound(key : String) -> Variant:
 		return ResourceLoader.load(res_path) as AudioStreamWAV
 	return null
 
-## Attempt to use system TTS to speak some text
+## Use system TTS to speak some text, doing nothing if TTS is unavailable
 func speak_tts(text : String) -> void:
-	if tts_voice == null:
-		push_warning("TTS unavailable; cannot speak '%s'" % text)
-		return
-
-	DisplayServer.tts_speak(text, tts_voice)
+	if tts_is_available():
+		DisplayServer.tts_speak(text, _tts_voice)

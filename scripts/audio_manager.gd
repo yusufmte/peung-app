@@ -21,6 +21,22 @@ func _ready() -> void:
 
 	DirAccess.make_dir_absolute(Global.sounds_dir)
 
+	%TTSVoicesDropdown.clear()
+	var voices = DisplayServer.tts_get_voices_for_language("en")
+	if not voices.is_empty():
+		var selected_index : int = 0
+		var selected_voice : String = Global.get_tts_voice()
+		for i in voices.size():
+			%TTSVoicesDropdown.add_item(voices[i])
+			if voices[i] == selected_voice:
+				selected_index = i
+		%TTSVoicesDropdown.select(selected_index)
+	else:
+		%TTSVoicesDropdown.add_item("TTS not available", 0)
+		%TTSVoicesDropdown.select(0)
+		%TTSVoicesDropdown.disabled = true
+		Global.set_and_save_tts_voice("")
+
 	_update_buttons_enabledness()
 	set_status_text("")
 
@@ -49,7 +65,6 @@ func _on_record_button_pressed() -> void:
 			set_status_text("Saved custom override for %s" % sound_key)
 		else:
 			set_status_text("Error: Unable to save custom override for %s" % sound_key)
-			print(err)
 	else:
 		mic.play()
 		recording_effect.set_recording_active(true)
@@ -106,3 +121,12 @@ func _on_delete_button_pressed() -> void:
 	else:
 		set_status_text("Error: Unable to delete custom override for %s" % sound_key)
 	_update_buttons_enabledness()
+
+
+func _on_tts_voices_dropdown_item_selected(index: int) -> void:
+	var voice : String = %TTSVoicesDropdown.get_item_text(
+		%TTSVoicesDropdown.get_item_index(
+			%TTSVoicesDropdown.get_selected_id()
+		)
+	)
+	Global.set_and_save_tts_voice(voice)

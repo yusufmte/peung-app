@@ -211,6 +211,13 @@ func play_sound(key:String) -> void:
 
 ## Queue the playing of a sound which is specified by sound key
 func queue_sound(key:String) -> void:
+
+	# Do not queue anything if TTS would be needed but TTS is unavailable,
+	# otherwise an item would get stuck in the queue and never count as played
+	var sound_resource_is_available : bool = sounds_dict.has(key) and sounds_dict[key] is AudioStreamWAV
+	if (not sound_resource_is_available) and (not Global.tts_is_available()):
+		return
+
 	if not sound_currently_playing:
 		sound_currently_playing = true
 		play_sound(key)
