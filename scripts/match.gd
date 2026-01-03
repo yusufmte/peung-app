@@ -60,7 +60,7 @@ func _ready():
 	remove_point_button.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ControlsHBox/RemovePointButtonMargin/RemovePointButton)
 	remove_point_button.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ControlsHBox/RemovePointButtonMargin/RemovePointButton)
 	for i in [0,1]:
-		remove_point_button[i].pressed.connect(confiscate_point.bind(player_rect[i]))
+		remove_point_button[i].pressed.connect(confiscate_point.bind(i))
 	
 	for i in [0,1]:
 		if player_rect[i].color.v < 0.5:
@@ -133,8 +133,7 @@ func award_point(player_being_awarded):
 	queue_sound("point award chime")
 	check_for_game_victory()
 
-func confiscate_point(rect):
-	var player_being_punished = player_rect.find(rect)
+func confiscate_point(player_being_punished):
 	if game_score[player_being_punished] > 0:
 		total_game_points = total_game_points - 1
 		game_score[player_being_punished] = game_score[player_being_punished] - 1
