@@ -56,7 +56,7 @@ func _on_record_button_pressed() -> void:
 
 		var selected_items : PackedInt32Array = %AudioManagerItemList.get_selected_items()
 		if selected_items.size() != 1:
-			set_status_text("Recording should not be enabled when there isn't a unqiue selection!")
+			set_status_text("Recording should not be enabled when there isn't a unique selection!")
 			return
 		var sound_key : String = %AudioManagerItemList.get_item_text(selected_items[0])
 		var user_path : String = Global.get_user_sound_path(sound_key)
@@ -93,7 +93,7 @@ func _on_audio_manager_item_list_item_selected(index: int) -> void:
 func _on_play_button_pressed() -> void:
 	var selected_items : PackedInt32Array = %AudioManagerItemList.get_selected_items()
 	if selected_items.size() != 1:
-		set_status_text("Play button should not be enabled when there isn't a unqiue selection!")
+		set_status_text("Play button should not be enabled when there isn't a unique selection!")
 		return
 	var sound_key : String = %AudioManagerItemList.get_item_text(selected_items[0])
 	var sound = Global.load_sound(sound_key)

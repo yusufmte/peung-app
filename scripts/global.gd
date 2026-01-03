@@ -14,17 +14,19 @@ var settings_filepath = "user://settings.cfg"
 var _tts_voice = null
 
 var _base_sound_keys : Array[String] = [
+	"begin game",
 	"point",
+	"point removed from",
 	"serve",
 	"wins the game",
 	"wins the match",
 	"deuce",
 	"match score",
 	"game score",
+	"point award chime",
+	"point rescind chime",
 	"victory chime", # (three notes ending with a longer chord)
 	"grand victory chime", # (three series of three notes, ending with a longer greater chord)
-	"point award chime", #  (a bell "ding")
-	"point rescind chime", # (a low "vwoopt" sound)
 ]
 
 func _ready() -> void:

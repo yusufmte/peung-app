@@ -89,6 +89,10 @@ func _ready():
 		DisplayServer.TTS_UTTERANCE_ENDED,
 		Callable(self, "_on_tts_utterance_ended"),
 	)
+	
+	queue_sound("begin game")
+	queue_sound([Global.p1_name, Global.p2_name][current_server])
+	queue_sound("serve")
 
 func reset_game():
 	game_score.fill(0)
@@ -101,6 +105,15 @@ func reset_game():
 		label.text = "SERVE"
 	starting_server = randi_range(0, 1)
 	update_server()
+	queue_sound("match score")
+	for score in match_score:
+		queue_sound(str(score))
+	queue_sound("game score")
+	for score in game_score:
+		queue_sound(str(score))
+	queue_sound("begin game")
+	queue_sound([Global.p1_name, Global.p2_name][current_server])
+	queue_sound("serve")
 	
 func _unhandled_input(event):
 	if not match_ongoing:
@@ -128,9 +141,15 @@ func award_point(player_being_awarded):
 	total_game_points = total_game_points + 1
 	game_score[player_being_awarded] = game_score[player_being_awarded] + 1
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
-	update_deuce_label()
 	update_server()
 	queue_sound("point award chime")
+	queue_sound([Global.p1_name, Global.p2_name][player_being_awarded])
+	queue_sound("point")
+	for score in game_score:
+		queue_sound(str(score))
+	update_deuce_label()
+	queue_sound([Global.p1_name, Global.p2_name][current_server])
+	queue_sound("serve")
 	check_for_game_victory()
 
 func confiscate_point(player_being_punished):
@@ -138,9 +157,15 @@ func confiscate_point(player_being_punished):
 		total_game_points = total_game_points - 1
 		game_score[player_being_punished] = game_score[player_being_punished] - 1
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
-		update_deuce_label()
 		update_server()
 		queue_sound("point rescind chime")
+		queue_sound("point removed from")
+		queue_sound([Global.p1_name, Global.p2_name][player_being_punished])
+		for score in game_score:
+			queue_sound(str(score))
+		update_deuce_label()
+		queue_sound([Global.p1_name, Global.p2_name][current_server])
+		queue_sound("serve")
 
 func is_deuce():
 	return (game_score[0] >= 10 and game_score[1] >= 10)
@@ -148,6 +173,8 @@ func is_deuce():
 func update_deuce_label():
 	if is_deuce():
 		deuce_label.show()
+		if game_score[0] == 10 and game_score[1] == 10:
+			queue_sound("deuce") # playing this here ensures "deuce" is only said once, or when you return to 10-10 via point confiscation
 	else:
 		deuce_label.hide()
 
@@ -186,6 +213,7 @@ func declare_game_winner(game_winning_player):
 	serve_label[game_winning_player].text = "WIN!!"
 	serve_marker[game_winning_player].show()
 	serve_marker[(game_winning_player + 1) % 2].hide()
+	queue_sound("victory chime")
 	queue_sound([Global.p1_name, Global.p2_name][game_winning_player])
 	queue_sound("wins the game")
 
@@ -194,6 +222,9 @@ func declare_match_winner(match_winning_player):
 	serve_label[match_winning_player].text = "MATCH WIN!!"
 	serve_marker[match_winning_player].show()
 	serve_marker[(match_winning_player + 1) % 2].hide()
+	queue_sound("grand victory chime")
+	queue_sound([Global.p1_name, Global.p2_name][match_winning_player])
+	queue_sound("wins the match")
 
 func update_server():
 	if not is_deuce():
