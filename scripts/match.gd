@@ -113,16 +113,18 @@ func _unhandled_input(event):
 			one_game_of_multiple_win_screen = false
 			reset_game()
 		else:
-			award_point(get_player_rect_at_pos(event.position))
+			var player_at_pos = get_player_at_pos(event.position)
+			if player_at_pos != 2:
+				award_point(player_at_pos)
 
 # Gets player 1 or player 2 color rect node that contains the position, if any
-func get_player_rect_at_pos(pos : Vector2):
-	for child in $ColorRect/MarginContainer/VBoxContainer/HBoxContainer.get_children():
-		if child.get_global_rect().has_point(pos):
-			return child
+func get_player_at_pos(pos : Vector2):
+	for i in [0,1]:
+		if player_rect[i].get_global_rect().has_point(pos):
+			return i
+	return 2 # indicates neither color rect node contains the position
 
-func award_point(rect):
-	var player_being_awarded = player_rect.find(rect)
+func award_point(player_being_awarded):
 	total_game_points = total_game_points + 1
 	game_score[player_being_awarded] = game_score[player_being_awarded] + 1
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
