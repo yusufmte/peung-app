@@ -18,6 +18,8 @@ func _ready() -> void:
 	item_list.clear()
 	for key in Global.sound_keys():
 		item_list.add_item(key)
+		
+	$ColorRect/MarginContainer/VBoxContainer/CenterMargin/CenterHBox/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 150
 
 	DirAccess.make_dir_absolute(Global.sounds_dir)
 
