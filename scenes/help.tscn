@@ -66,10 +66,8 @@ theme_override_font_sizes/italics_font_size = 45
 theme_override_font_sizes/mono_font_size = 45
 theme_override_font_sizes/normal_font_size = 45
 theme_override_font_sizes/bold_font_size = 45
-text = "• Type player names, select number of games, then start match.
-• TAP on a player's side of the screen to award a point. HOLD to rescind a point that was awarded in error.
-• Serve switches after every two points.
-• Game ends after a player scores at least 11 points with a 2-point lead.
+text = "• Tap on a player's side of the screen to award a point. Tap the \"—\" button to rescind a point that was awarded in error.
+• Serve switches after every two points. Game ends after a player scores at least 11 points with a 2-point lead.
 • If there is >1 game, the match score will display in the top center.
 • By default, text-to-speech will be used for audio. Any audio file generated this way can then be overwritten with a recording using the audio manager."
 fit_content = true

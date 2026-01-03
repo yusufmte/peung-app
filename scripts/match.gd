@@ -11,6 +11,7 @@ var match_score_label = []
 var match_score = [0,0]
 var game_score_label = []
 var game_score = [0,0]
+var remove_point_button = []
 var name_label = []
 var player_rect = []
 var match_ongoing = true
@@ -56,13 +57,25 @@ func _ready():
 	player_rect[0].color = Global.p1_color
 	player_rect[1].color = Global.p2_color
 	
+	remove_point_button.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ControlsHBox/RemovePointButtonMargin/RemovePointButton)
+	remove_point_button.append($ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ControlsHBox/RemovePointButtonMargin/RemovePointButton)
+	for i in [0,1]:
+		remove_point_button[i].pressed.connect(confiscate_point.bind(player_rect[i]))
+	
 	for i in [0,1]:
 		if player_rect[i].color.v < 0.5:
 			serve_label[i].add_theme_color_override("font_color", Color.WHITE)
 			match_score_label[i].add_theme_color_override("font_color", Color.WHITE)
 			game_score_label[i].add_theme_color_override("font_color", Color.WHITE)
 			name_label[i].add_theme_color_override("font_color", Color.WHITE)
-	
+			remove_point_button[i].add_theme_color_override("font_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_disabled_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_hover_pressed_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_hover_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_outline_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_focus_color", Color.WHITE)
+			remove_point_button[i].add_theme_color_override("font_pressed_color", Color.WHITE)
+
 	if Global.num_games == 1:
 		for label in match_score_label:
 			label.add_theme_color_override("font_color", Color(0,0,0,0))
@@ -95,13 +108,12 @@ func _unhandled_input(event):
 	if not event is InputEventMouseButton:
 		return
 
-	if event.is_pressed() and one_game_of_multiple_win_screen:
+	if event.is_pressed():
+		if one_game_of_multiple_win_screen:
 			one_game_of_multiple_win_screen = false
 			reset_game()
-	elif event.is_released() and event.is_action_released("primary"):
-		award_point(get_player_rect_at_pos(event.position))
-	elif event.is_pressed() and event.is_action_pressed("secondary"):
-		confiscate_point(get_player_rect_at_pos(event.position))
+		else:
+			award_point(get_player_rect_at_pos(event.position))
 
 # Gets player 1 or player 2 color rect node that contains the position, if any
 func get_player_rect_at_pos(pos : Vector2):

@@ -70,14 +70,14 @@ text = "0"
 [node name="Name" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 100
-text = "Player 1"
+theme_override_font_sizes/font_size = 80
+text = "P1"
 horizontal_alignment = 1
 
 [node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 200
+theme_override_font_sizes/font_size = 150
 text = "0"
 horizontal_alignment = 1
 
@@ -93,13 +93,38 @@ alignment = 1
 [node name="ServeLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 85
 text = "SERVE"
 horizontal_alignment = 1
 
 [node name="ServeIcon" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ServeMarker"]
 layout_mode = 2
 texture = ExtResource("1_t0cgm")
+expand_mode = 2
+
+[node name="ControlsHBox" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox"]
+layout_mode = 2
+
+[node name="RemovePointButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ControlsHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RemovePointButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P1ColorRect/P1MarginContainer/P1VBox/ControlsHBox/RemovePointButtonMargin"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 65
+text = " — "
 
 [node name="P2ColorRect" type="ColorRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -135,14 +160,14 @@ text = "0"
 [node name="Name" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 100
-text = "Player 2"
+theme_override_font_sizes/font_size = 80
+text = "P2"
 horizontal_alignment = 1
 
 [node name="GameScore" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 200
+theme_override_font_sizes/font_size = 150
 text = "0"
 horizontal_alignment = 1
 
@@ -158,13 +183,37 @@ alignment = 1
 [node name="ServeLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 85
 text = "SERVE"
 horizontal_alignment = 1
 
 [node name="ServeIcon" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ServeMarker"]
 layout_mode = 2
 texture = ExtResource("1_t0cgm")
+expand_mode = 2
+
+[node name="ControlsHBox" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox"]
+layout_mode = 2
+
+[node name="RemovePointButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ControlsHBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RemovePointButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/P2ColorRect/P2MarginContainer/P2VBox/ControlsHBox/RemovePointButtonMargin"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 65
+text = " — "
 
 [node name="ReturnButtonMargin" type="MarginContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
