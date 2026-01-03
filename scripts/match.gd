@@ -105,6 +105,8 @@ func reset_game():
 		label.text = "SERVE"
 	starting_server = randi_range(0, 1)
 	update_server()
+	
+	sound_queue.clear()
 	queue_sound("match score")
 	for score in match_score:
 		queue_sound(str(score))
@@ -142,22 +144,27 @@ func award_point(player_being_awarded):
 	game_score[player_being_awarded] = game_score[player_being_awarded] + 1
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
 	update_server()
+	
+	sound_queue.clear()
 	queue_sound("point award chime")
 	queue_sound([Global.p1_name, Global.p2_name][player_being_awarded])
 	queue_sound("point")
 	for score in game_score:
 		queue_sound(str(score))
 	update_deuce_label()
-	queue_sound([Global.p1_name, Global.p2_name][current_server])
-	queue_sound("serve")
 	check_for_game_victory()
+	if match_ongoing and not one_game_of_multiple_win_screen:
+		queue_sound([Global.p1_name, Global.p2_name][current_server])
+		queue_sound("serve")
 
 func confiscate_point(player_being_punished):
-	if game_score[player_being_punished] > 0:
+	if game_score[player_being_punished] > 0 and match_ongoing and not one_game_of_multiple_win_screen:
 		total_game_points = total_game_points - 1
 		game_score[player_being_punished] = game_score[player_being_punished] - 1
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
 		update_server()
+		
+		sound_queue.clear()
 		queue_sound("point rescind chime")
 		queue_sound("point removed from")
 		queue_sound([Global.p1_name, Global.p2_name][player_being_punished])
