@@ -41,6 +41,8 @@ func _ready() -> void:
 
 	_update_buttons_enabledness()
 	set_status_text("")
+	
+	if OS.get_name() == "Android": OS.request_permission("android.permission.RECORD_AUDIO")
 
 ## Set the status label at the bottom to display some text. 
 func set_status_text(text:String) -> void:
@@ -50,6 +52,7 @@ func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
 
 func _on_record_button_pressed() -> void:
+
 	if recording_effect.is_recording_active():
 		recording = recording_effect.get_recording()
 		mic.stop()
