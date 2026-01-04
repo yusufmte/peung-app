@@ -14,6 +14,7 @@ var game_score = [0,0]
 var remove_point_button = []
 var name_label = []
 var player_rect = []
+var gamestate = "" #"onegame_win", "onegame_ongoing", "match_ongoing", "match_partial_win", "match_complete_win"
 var match_ongoing = true
 var one_game_of_multiple_win_screen = false
 var deuce = false
@@ -91,8 +92,7 @@ func _ready():
 	)
 	
 	queue_sound("begin game")
-	queue_sound([Global.p1_name, Global.p2_name][current_server])
-	queue_sound("serve")
+	announce_server()
 
 func reset_game():
 	game_score.fill(0)
@@ -108,14 +108,11 @@ func reset_game():
 	
 	sound_queue.clear()
 	queue_sound("match score")
-	for score in match_score:
-		queue_sound(str(score))
+	announce_scores(match_score)
 	queue_sound("game score")
-	for score in game_score:
-		queue_sound(str(score))
+	announce_scores(game_score)
 	queue_sound("begin game")
-	queue_sound([Global.p1_name, Global.p2_name][current_server])
-	queue_sound("serve")
+	announce_server()
 	
 func _unhandled_input(event):
 	if not match_ongoing:
@@ -149,13 +146,11 @@ func award_point(player_being_awarded):
 	queue_sound("point award chime")
 	queue_sound([Global.p1_name, Global.p2_name][player_being_awarded])
 	queue_sound("point")
-	for score in game_score:
-		queue_sound(str(score))
+	announce_scores(game_score)
 	update_deuce_label()
 	check_for_game_victory()
 	if match_ongoing and not one_game_of_multiple_win_screen:
-		queue_sound([Global.p1_name, Global.p2_name][current_server])
-		queue_sound("serve")
+		announce_server()
 
 func confiscate_point(player_being_punished):
 	if game_score[player_being_punished] > 0 and match_ongoing and not one_game_of_multiple_win_screen:
@@ -168,11 +163,9 @@ func confiscate_point(player_being_punished):
 		queue_sound("point rescind chime")
 		queue_sound("point removed from")
 		queue_sound([Global.p1_name, Global.p2_name][player_being_punished])
-		for score in game_score:
-			queue_sound(str(score))
+		announce_scores(game_score)
 		update_deuce_label()
-		queue_sound([Global.p1_name, Global.p2_name][current_server])
-		queue_sound("serve")
+		announce_server()
 
 func is_deuce():
 	return (game_score[0] >= 10 and game_score[1] >= 10)
@@ -288,6 +281,14 @@ func _on_play_sound_finish() -> void:
 	else:
 		assert(sound_currently_playing)
 		play_sound(sound_queue.pop_front())
+
+func announce_server():
+	queue_sound([Global.p1_name, Global.p2_name][current_server])
+	queue_sound("serve")
+
+func announce_scores(scores):
+	for score in scores:
+		queue_sound(str(score))
 
 func _on_ReturnButton_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
