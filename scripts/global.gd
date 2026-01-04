@@ -14,7 +14,6 @@ var settings_filepath = "user://settings.cfg"
 var _tts_voice = null
 
 var _base_sound_keys : Array[String] = [
-	"begin game",
 	"point",
 	"point removed from",
 	"serve",
@@ -23,8 +22,8 @@ var _base_sound_keys : Array[String] = [
 	"deuce",
 	"match score",
 	"game score",
-	"point award chime",
-	"point rescind chime",
+	"point award chime", # short ding
+	"point rescind chime", # longer vwoopt
 	"victory chime", # (three notes ending with a longer chord)
 	"grand victory chime", # (three series of three notes, ending with a longer greater chord)
 ]

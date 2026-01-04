@@ -1,8 +1,6 @@
 extends Control
 
 var starting_server = randi_range(0, 1)
-var total_game_points = 0
-var total_match_points = 0
 var current_server = 0
 var serve_marker = []
 var serve_label = []
@@ -14,9 +12,9 @@ var game_score = [0,0]
 var remove_point_button = []
 var name_label = []
 var player_rect = []
-var gamestate = "" #"onegame_win", "onegame_ongoing", "match_ongoing", "match_partial_win", "match_complete_win"
-var match_ongoing = true
-var one_game_of_multiple_win_screen = false
+var gamestate = "" #"ongoing", "onegame_win", "match_partial_win", "match_complete_win"
+var win_scene = preload("res://scenes/win.tscn")
+var win_box
 var deuce = false
 var games_needed_to_win_match = int(Global.num_games / 2) + 1
 
@@ -91,40 +89,33 @@ func _ready():
 		Callable(self, "_on_tts_utterance_ended"),
 	)
 	
-	queue_sound("begin game")
+	gamestate = "ongoing"
 	announce_server()
 
 func reset_game():
 	game_score.fill(0)
-	total_game_points = 0
 	deuce = false
 	deuce_label.hide()
 	for label in game_score_label:
 		label.text = "0"
-	for label in serve_label:
-		label.text = "SERVE"
 	starting_server = randi_range(0, 1)
 	update_server()
 	
 	sound_queue.clear()
-	queue_sound("match score")
-	announce_scores(match_score)
-	queue_sound("game score")
-	announce_scores(game_score)
-	queue_sound("begin game")
+	if Global.num_games > 1:
+		queue_sound("match score")
+		announce_scores(match_score)
+		queue_sound("game score")
+		announce_scores(game_score)
+	gamestate = "ongoing"
 	announce_server()
 	
 func _unhandled_input(event):
-	if not match_ongoing:
-		return
 	if not event is InputEventMouseButton:
 		return
 
 	if event.is_pressed():
-		if one_game_of_multiple_win_screen:
-			one_game_of_multiple_win_screen = false
-			reset_game()
-		else:
+		if gamestate == "ongoing":
 			var player_at_pos = get_player_at_pos(event.position)
 			if player_at_pos != 2:
 				award_point(player_at_pos)
@@ -137,10 +128,12 @@ func get_player_at_pos(pos : Vector2):
 	return 2 # indicates neither color rect node contains the position
 
 func award_point(player_being_awarded):
-	total_game_points = total_game_points + 1
 	game_score[player_being_awarded] = game_score[player_being_awarded] + 1
 	game_score_label[player_being_awarded].text = str(game_score[player_being_awarded])
 	update_server()
+	
+	if check_for_game_or_match_victory():
+		return
 	
 	sound_queue.clear()
 	queue_sound("point award chime")
@@ -148,13 +141,10 @@ func award_point(player_being_awarded):
 	queue_sound("point")
 	announce_scores(game_score)
 	update_deuce_label()
-	check_for_game_victory()
-	if match_ongoing and not one_game_of_multiple_win_screen:
-		announce_server()
+	announce_server()
 
 func confiscate_point(player_being_punished):
-	if game_score[player_being_punished] > 0 and match_ongoing and not one_game_of_multiple_win_screen:
-		total_game_points = total_game_points - 1
+	if game_score[player_being_punished] > 0:
 		game_score[player_being_punished] = game_score[player_being_punished] - 1
 		game_score_label[player_being_punished].text = str(game_score[player_being_punished])
 		update_server()
@@ -166,6 +156,20 @@ func confiscate_point(player_being_punished):
 		announce_scores(game_score)
 		update_deuce_label()
 		announce_server()
+			
+		if gamestate != "ongoing" and not check_for_game_or_match_victory(): #if the gamestate was not "ongoing", but there isn't a victor anymore
+			prematurely_remove_win_box()
+			if gamestate == "match_complete_win": # because the match score is updated early when a whole multigame match is won, the unearned match points must be rescinded here
+				if match_score[0] > match_score[1]:
+					match_score[0] = match_score[0] - 1
+					match_score_label[0].text = str(match_score[0])
+				if match_score[1] > match_score[0]:
+					match_score[1] = match_score[1] - 1
+					match_score_label[1].text = str(match_score[1])
+			gamestate = "ongoing"
+		
+		if check_for_game_or_match_victory():
+			return
 
 func is_deuce():
 	return (game_score[0] >= 10 and game_score[1] >= 10)
@@ -178,62 +182,76 @@ func update_deuce_label():
 	else:
 		deuce_label.hide()
 
-func check_for_game_victory():
-	if game_score[0] < 10 and game_score[1] < 10: #neither deuce nor victory
-		return
+func show_win_box(winning_player,win_type):
+	win_box = win_scene.instantiate()
+	win_box.initialize(winning_player,win_type)
+	add_child(win_box)
+	win_box.rematch.connect(_on_rematch_pressed)
+	win_box.nextgame.connect(_on_nextgame_pressed)
+
+func prematurely_remove_win_box():
+	remove_child(win_box)
+
+func _on_rematch_pressed():
+	match_score.fill(0)
+	for label in match_score_label:
+		label.text = "0"
+	reset_game()
+
+func _on_nextgame_pressed():
+	var victor = check_game_victor()
+	match_score[victor] = match_score[victor] + 1
+	match_score_label[victor].text = str(match_score[victor])
+	reset_game()
+
+func check_game_victor():
 	if game_score[0] > 10 or game_score[1] > 10: #someone winning (if there is a 2pt lead, checked below)
-			if game_score[0] > (game_score[1] + 1):
-				game_victory(0)
-			if game_score[1] > (game_score[0] + 1):
-				game_victory(1)
+		if game_score[0] > (game_score[1] + 1):
+			return 0
+		if game_score[1] > (game_score[0] + 1):
+			return 1
+	return 2 #no one winning
 
-func game_victory(game_winning_player):
-	if Global.num_games > 1:
-		award_game_point(game_winning_player)
-		total_match_points = total_match_points + 1
-	else:
-		declare_game_winner(game_winning_player)
-		match_ongoing = false
-
-func award_game_point(game_winning_player):
-	match_score[game_winning_player] = match_score[game_winning_player] + 1
-	match_score_label[game_winning_player].text = str(match_score[game_winning_player])
-	check_for_match_victory()
-	if match_ongoing:
-		declare_game_winner(game_winning_player)
-		one_game_of_multiple_win_screen = true
-
-func check_for_match_victory():
-	if match_score[0] >= games_needed_to_win_match:
-		declare_match_winner(0)
-	if match_score[1] >= games_needed_to_win_match:
-		declare_match_winner(1)
-
-func declare_game_winner(game_winning_player):
-	serve_label[game_winning_player].text = "WIN!!"
-	serve_marker[game_winning_player].show()
-	serve_marker[(game_winning_player + 1) % 2].hide()
-	queue_sound("victory chime")
-	queue_sound([Global.p1_name, Global.p2_name][game_winning_player])
-	queue_sound("wins the game")
-
-func declare_match_winner(match_winning_player):
-	match_ongoing = false
-	serve_label[match_winning_player].text = "MATCH WIN!!"
-	serve_marker[match_winning_player].show()
-	serve_marker[(match_winning_player + 1) % 2].hide()
-	queue_sound("grand victory chime")
-	queue_sound([Global.p1_name, Global.p2_name][match_winning_player])
-	queue_sound("wins the match")
+func check_for_game_or_match_victory():
+	var victor = check_game_victor()
+	if check_game_victor() < 2 and gamestate == "ongoing": # this means someone is newly winning the GAME
+		if Global.num_games == 1: # if there is one game, declare the victor
+			sound_queue.clear()
+			queue_sound("victory chime")
+			queue_sound([Global.p1_name, Global.p2_name][victor])
+			queue_sound("wins the game")
+			show_win_box(victor,"onegame")
+			gamestate = "onegame_win"
+			return true
+		else: # if there are multiple games, either declare the game or match victor
+			if (match_score[victor] + 1) < games_needed_to_win_match: # more games left in the match
+				sound_queue.clear()
+				queue_sound("victory chime")
+				queue_sound([Global.p1_name, Global.p2_name][victor])
+				queue_sound("wins the game")
+				show_win_box(victor,"match_partial")
+				gamestate = "match_partial_win"
+				return true
+			else: # once victor wins this game, they will have won the match
+				sound_queue.clear()
+				queue_sound("grand victory chime")
+				queue_sound([Global.p1_name, Global.p2_name][victor])
+				queue_sound("wins the match")
+				match_score[victor] = match_score[victor] + 1 # the match score incrementation is usually in the "nextgame" button - so when the match is won, this needs to be done here
+				match_score_label[victor].text = str(match_score[victor])
+				show_win_box(victor,"match_complete")
+				gamestate = "match_complete_win"
+				return true
+	return false
 
 func update_server():
 	if not is_deuce():
-		if (total_game_points % 4) < 2: #serve alternates every 2pts
+		if ((game_score[0]+game_score[1]) % 4) < 2: #serve alternates every 2pts
 			set_server_to(starting_server)
 		else:
 			set_server_to(1 - starting_server) #makes server 0 if starting server was 1, and vice versa
 	else: #serve alternates every 1pt in deuce mode
-			set_server_to((total_game_points + starting_server) % 2) #this is weird, but i believe ends up correctly calculating the deuce server
+			set_server_to(((game_score[0]+game_score[1]) + starting_server) % 2) #this is weird, but i believe ends up correctly calculating the deuce server
 
 func set_server_to(server):
 	current_server = server

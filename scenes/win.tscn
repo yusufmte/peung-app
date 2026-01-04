@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://02vjo74kxyes"]
 
-[ext_resource type="Script" uid="uid://ck5gqgs45rwwg" path="res://scenes/win.gd" id="1_r4oei"]
+[ext_resource type="Script" uid="uid://ck5gqgs45rwwg" path="res://scripts/win.gd" id="1_r4oei"]
 
 [node name="win" type="Control"]
 layout_mode = 3
@@ -9,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_r4oei")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -19,10 +20,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -350.0
+offset_top = -150.0
+offset_right = 350.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.321118, 0.324264, 1)
@@ -43,15 +44,18 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="VictoryLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(670, 190)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 45
 text = "peup wins! the match, that is."
 autowrap_mode = 2
 
 [node name="VictoryButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 60
