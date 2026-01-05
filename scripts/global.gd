@@ -72,19 +72,7 @@ func sound_keys() -> Array[String]:
 	var numbers : Array[String] = []
 	for i in range(1,16):
 		numbers.append(str(i))
-		
-	var custom : Array[String]
-	var dir = DirAccess.open(sounds_dir)
-	dir.list_dir_begin()
-	var filename = dir.get_next()
-	var i = 0
-	while filename != "" and i < 20: # list up to 20 custom peups max
-		custom.append(filename.substr(0,(filename.length()-4)))
-		filename = dir.get_next()
-		i = i + 1
-	dir.list_dir_end()
-	
-	return player_name_keys + custom + _base_sound_keys + numbers
+	return player_name_keys + _base_sound_keys + numbers
 
 ## Convert string key into something that is allowed to be a filename
 func sanitize_key(key: String) -> String:
